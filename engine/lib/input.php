@@ -228,11 +228,14 @@ function _elgg_htmlawed_filter_tags(\Elgg\Hook $hook) {
 		'comment' => 1,
 		'cdata' => 1,
 		
+		// do not allow html form elements besides those included in the safe config
+		'elements' => '* -applet -audio -canvas -embed -iframe -object -script -video -form',
+		
 		// do not check for unique ids as the full input stack could be checked multiple times
 		// @see https://github.com/Elgg/Elgg/issues/12934
 		'unique_ids' => 0,
 
-		'deny_attribute' => 'class, on*, formaction',
+		'deny_attribute' => 'class, on*, formaction, href',
 		'hook_tag' => '_elgg_htmlawed_tag_post_processor',
 
 		'schemes' => '*:http,https,ftp,news,mailto,rtsp,teamspeak,gopher,mms,callto',
@@ -282,7 +285,7 @@ function _elgg_htmlawed_tag_post_processor($element, $attributes = false) {
 
 	// this list should be coordinated with the WYSIWYG editor used (tinymce, ckeditor, etc.)
 	$allowed_styles = [
-		'color', 'cursor', 'text-align', 'vertical-align', 'font-size',
+		'color', 'cursor', 'text-align', 'vertical-align',
 		'font-weight', 'font-style', 'border', 'border-top', 'background-color',
 		'border-bottom', 'border-left', 'border-right',
 		'margin', 'margin-top', 'margin-bottom', 'margin-left',
